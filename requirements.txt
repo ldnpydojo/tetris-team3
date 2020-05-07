@@ -1,1 +1,1 @@
-wasabi2d
+-e git://github.com/lordmauve/wasabi2d.git#egg=wasabi2d
