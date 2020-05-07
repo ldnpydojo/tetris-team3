@@ -47,6 +47,17 @@ def update_active_piece():
         )
 
 
+def drop_tick():
+    if active_piece.can_drop():
+        active_piece.drop()
+        update_active_piece()
+    else:
+        print("Cannot drop")
+
+
+w2d.clock.schedule_interval(drop_tick, 1)
+
+
 @w2d.event
 def on_key_down(key):
     rotated = False
