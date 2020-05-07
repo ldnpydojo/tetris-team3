@@ -1,6 +1,8 @@
 import wasabi2d as w2d
 from wasabi2d.keyboard import keys
-from model import Piece, l_orientations, TetrisBoard
+from model import Piece, ALL_PIECES, TetrisBoard
+from random import choice
+
 
 scene = w2d.Scene()
 
@@ -24,14 +26,25 @@ active_piece_sprites = []
 active_piece = None
 
 
+COLOURS = [
+    'red',
+    'green',
+    'blue',
+    'yellow',
+]
+
+
 def create_piece():
     global active_piece
-    active_piece = Piece("*", l_orientations, (0, 0), b)
+    type = choice(ALL_PIECES)
+    active_piece = Piece("*", type, (0, 0), b)
+    active_piece_sprites.clear()
+    colour = choice(COLOURS)
     for p in active_piece:
         sprite = scene.layers[1].add_sprite(
             "tile",
             pos=grid_to_screen(*p),
-            color='green',
+            color=colour,
             scale=0.75
         )
         active_piece_sprites.append(sprite)
@@ -52,7 +65,9 @@ def drop_tick():
         active_piece.drop()
         update_active_piece()
     else:
-        print("Cannot drop")
+        for point in active_piece:
+            b[point] = True
+        create_piece()
 
 
 w2d.clock.schedule_interval(drop_tick, 1)
@@ -73,8 +88,12 @@ def on_key_down(key):
     elif key == keys.RIGHT and active_piece.can_go_right():
         active_piece.move_right()
         updated = True
+    elif key == key.DOWN:
+        drop_tick()
+        updated = True
     if updated:
         update_active_piece()
+
 
 create_piece()
 w2d.run()

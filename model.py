@@ -39,6 +39,17 @@ rl_orientations = [
     [(1, 2), (1, 1), (1, 0), (0, 2)]
 ]
 
+
+ALL_PIECES = [
+    l_orientations,
+    i_orientations,
+    sq_orientations,
+    three_orientations,
+    z_orientations,
+    s_orientations,
+    rl_orientations,
+]
+
 #
 # Current Coord is the top-left corner of the bounding box
 # That way, we can check what happens if we drop the entire
@@ -103,6 +114,8 @@ class Piece(object):
 
     def can_drop(self):
         new_orientation = self.coords_offset_by(self.repositioned((0, 1)), self.current_coord)
+        if any(coord not in self.game_board for coord in new_orientation):
+            return False
         if any(self.game_board[coord] for coord in new_orientation):
             return False
         return True
@@ -123,8 +136,8 @@ class Piece(object):
             return False
         return True
 
-class TetrisBoard(board.Board):
 
+class TetrisBoard(board.Board):
     def move_piece(self, piece, vector):
         for coord in piece.board_coords:
             del self[coord]
