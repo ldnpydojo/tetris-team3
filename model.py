@@ -55,7 +55,7 @@ class Piece(object):
         self.game_board = game_board
 
     def __iter__(self):
-        return self.orientations[self.current_orientation]
+        return iter(self.orientations[self.current_orientation])
 
     def rotate_right(self):
         self.current_orientation += 1
@@ -126,8 +126,9 @@ class TetrisBoard(board.Board):
             self[coord] = piece.character
 
 
-b = TetrisBoard((10, 20))
+if __name__ == '__main__':
+    b = TetrisBoard((10, 20))
 
-l_shape = Piece("*", l_orientations, (0, 0), b)
-three_shape = Piece("+", three_orientations, (0, 0), b)
+    l_shape = Piece("*", l_orientations, (0, 0), b)
+    three_shape = Piece("+", three_orientations, (0, 0), b)
 

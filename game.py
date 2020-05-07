@@ -1,6 +1,6 @@
 import wasabi2d as w2d
 from wasabi2d.keyboard import keys
-from model import Piece, l_positions
+from model import Piece, l_orientations, TetrisBoard
 
 scene = w2d.Scene()
 
@@ -19,14 +19,15 @@ def grid_to_screen(x, y):
 #        scene.layers[1].add_sprite("tile", pos=(x, y), color='green', scale=0.75)
 
 
+b = TetrisBoard((10, 20))
 active_piece_sprites = []
 active_piece = None
 
 
 def create_piece():
     global active_piece
-    active_piece = Piece("*", l_positions)
-    for p in active_piece.position():
+    active_piece = Piece("*", l_orientations, (0, 0), b)
+    for p in active_piece:
         sprite = scene.layers[1].add_sprite(
             "tile",
             pos=grid_to_screen(*p),
@@ -38,7 +39,7 @@ def create_piece():
 
 def update_active_piece():
     """Make the sprites for the active piece reflect their grid coordinates."""
-    for sprite, pos in zip(active_piece_sprites, active_piece.position()):
+    for sprite, pos in zip(active_piece_sprites, active_piece):
         w2d.animate(
             sprite,
             duration=0.1,
