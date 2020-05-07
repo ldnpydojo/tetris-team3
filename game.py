@@ -37,7 +37,7 @@ COLOURS = [
 def create_piece():
     global active_piece
     type = choice(ALL_PIECES)
-    active_piece = Piece("*", type, (0, 0), b)
+    active_piece = Piece("*", type, (4, 0), b)
     active_piece_sprites.clear()
     colour = choice(COLOURS)
     for p in active_piece:
