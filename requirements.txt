@@ -1,1 +1,2 @@
 -e git+git@github.com:tjguk/dojo-board.git@533713d3c836e921e4e56838c1ef90a36197f03a#egg=board
+-e git://github.com/lordmauve/wasabi2d.git#egg=wasabi2d
