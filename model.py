@@ -35,18 +35,20 @@ class TetrisBoard(board.Board):
         for coord in coords:
             self[coord] = "*"
 
-b = TetrisBoard((8, 8))
-l_shape = Piece("*", l_positions)
 
-b.place_piece(l_shape.position(), (0, 0))
-b.draw()
-input("Enter...")
-b.clear()
-l_shape.rotate_right()
-b.place_piece(l_shape.position(), (0, 0))
-b.draw()
-input("Enter...")
-b.clear()
-l_shape.rotate_left()
-b.place_piece(l_shape.position(), (0, 0))
-b.draw()
+if __name__ == '__main__':
+    b = TetrisBoard((8, 8))
+    l_shape = Piece("*", l_positions)
+
+    b.place_piece(l_shape.position(), (0, 0))
+    b.draw()
+    input("Enter...")
+    b.clear()
+    l_shape.rotate_right()
+    b.place_piece(l_shape.position(), (0, 0))
+    b.draw()
+    input("Enter...")
+    b.clear()
+    l_shape.rotate_left()
+    b.place_piece(l_shape.position(), (0, 0))
+    b.draw()
