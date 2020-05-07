@@ -60,14 +60,20 @@ w2d.clock.schedule_interval(drop_tick, 1)
 
 @w2d.event
 def on_key_down(key):
-    rotated = False
-    if key == keys.LEFT:
+    updated = False
+    if key == keys.Z:
         active_piece.rotate_left()
-        rotated = True
-    elif key == keys.RIGHT:
+        updated = True
+    elif key == keys.X:
         active_piece.rotate_right()
-        rotated = True
-    if rotated:
+        updated = True
+    if key == keys.LEFT and active_piece.can_go_left():
+        active_piece.move_left()
+        updated = True
+    elif key == keys.RIGHT and active_piece.can_go_right():
+        active_piece.move_right()
+        updated = True
+    if updated:
         update_active_piece()
 
 create_piece()
