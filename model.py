@@ -55,7 +55,7 @@ class Piece(object):
         self.game_board = game_board
 
     def __iter__(self):
-        return iter(self.orientations[self.current_orientation])
+        return iter(self.board_coords())
 
     def rotate_right(self):
         self.current_orientation += 1
@@ -72,6 +72,10 @@ class Piece(object):
         dx, dy = vector
         self.current_coord = (x + dx, y + dy)
 
+    def drop(self):
+        x, y = self.current_coord
+        self.current_coord = (x,  y + 1)
+
     def move_left(self):
         x, y = self.current_coord
         self.current_coord = (x  - 1,  y)
@@ -84,7 +88,7 @@ class Piece(object):
         return self.orientations[self.current_orientation]
 
     def board_coords(self):
-        return self.coords_offset_by(self.orientation, self.current_coord)
+        return self.coords_offset_by(self.orientation(), self.current_coord)
 
     def coord_offset_by(self, coord, vector):
         x, y = coord
@@ -92,29 +96,32 @@ class Piece(object):
         return (x + dx, y + dy)
 
     def coords_offset_by(self, coords, vector):
-        return [self.coord_offset_by(coord, vector) for c in coords]
+        return [self.coord_offset_by(c, vector) for c in coords]
 
     def repositioned(self, vector):
-        return self.coords_offset_by(self.orientations(), vector)
+        return self.coords_offset_by(self.orientation(), vector)
 
     def can_drop(self):
         new_orientation = self.coords_offset_by(self.repositioned((0, 1)), self.current_coord)
         if any(self.game_board[coord] for coord in new_orientation):
             return False
+        return True
 
     def can_go_left(self):
         new_orientation = self.coords_offset_by(self.repositioned((-1, 0)), self.current_coord)
-        if any(self.game_board[coord] for coord in new_orientation):
-            return False
         if any(coord not in self.game_board for coord in new_orientation):
             return False
+        if any(self.game_board[coord] for coord in new_orientation):
+            return False
+        return True
 
     def can_go_right(self):
         new_orientation = self.coords_offset_by(self.repositioned((+1, 0)), self.current_coord)
-        if any(self.game_board[coord] for coord in new_orientation):
-            return False
         if any(coord not in self.game_board for coord in new_orientation):
             return False
+        if any(self.game_board[coord] for coord in new_orientation):
+            return False
+        return True
 
 class TetrisBoard(board.Board):
 
